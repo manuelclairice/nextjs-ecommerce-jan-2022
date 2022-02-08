@@ -1,6 +1,6 @@
 // import { css } from '@emotion/react';
 import Head from 'next/head';
-import Image from 'next/image';
+import HeroImage from '../components/HeroImage';
 import Layout from '../components/Layout';
 
 // import heroPicture from '../public/images/bayc-mutant-hero.jpeg';
@@ -18,15 +18,9 @@ export default function Home() {
       </Head>
 
       <section>
-        <Image
-          src="/public/images/bayc-mutant-hero.jpeg"
-          alt="Logo"
-          width={1627}
-          height={1028}
-        />
-        <h1>Best collection of NFTs</h1>
-        <button>Buy Now</button>
+        <HeroImage />
       </section>
+      <section>Collection of the week</section>
     </Layout>
   );
 }
