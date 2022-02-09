@@ -1,8 +1,9 @@
 import { css } from '@emotion/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import blockChainLogo from '../public/blockchain-logo.png';
 
-const headerStyle = css`
+const navigationStyle = css`
   position: relative;
   background-color: none;
   color: white;
@@ -27,10 +28,10 @@ export default function Header() {
     <header>
       <Link href="/">
         <a>
-          <Image src="/blockchain-logo.png" alt="Logo" width={70} height={70} />
+          <Image src={blockChainLogo} width={80} height={80} margin-left={50} />
         </a>
       </Link>
-      <nav css={headerStyle}>
+      <nav css={navigationStyle}>
         <div>
           <Link href="/">
             <a>Home</a>

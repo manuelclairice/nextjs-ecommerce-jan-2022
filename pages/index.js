@@ -1,13 +1,11 @@
 // import { css } from '@emotion/react';
 import Head from 'next/head';
+// import Link from 'next/link';
 import HeroImage from '../components/HeroImage';
 import Layout from '../components/Layout';
+import ProductSection from '../components/ProductSection';
 
 // import heroPicture from '../public/images/bayc-mutant-hero.jpeg';
-
-// const homePageSectionStyle = css`
-//   background-image: url(${heroPicture});
-// `;
 
 export default function Home() {
   return (
@@ -20,7 +18,11 @@ export default function Home() {
       <section>
         <HeroImage />
       </section>
-      <section>Collection of the week</section>
+
+      <section>
+        <h2>Collection of the week</h2>
+        <ProductSection />
+      </section>
     </Layout>
   );
 }
