@@ -1,19 +1,21 @@
+import { css } from '@emotion/react';
 import Head from 'next/head';
+import Image from 'next/image';
+import Link from 'next/link';
 import Layout from '../components/Layout';
+import products from '../util/database';
 
-const products = [
-  { id: 1, name: '#142', price: '15000 euro' },
-  { id: 3, name: '#314', price: '15000 euro' },
-  { id: 2, name: '#959', price: '15000 euro' },
-  // { id: 4, name: "#1157", price: "15000 euro" },
-  // { id: 5, name: "#2052", price: "15000 euro" },
-  // { id: 6, name: "#2064", price: "15000 euro" },
-  // { id: 7, name: "#2171", price: "15000 euro" },
-  // { id: 8, name: "#2638", price: "15000 euro" },
-  // { id: 9, name: "#7271", price: "15000 euro" },
-];
+const collectionStyle = css`
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 20px;
+  width: 150px;
+  justify-content: space-evenly;
+  align-items: stretch;
+`;
 
-export default function Collection() {
+export default function Collection(props) {
   return (
     <div>
       <Layout>
@@ -23,14 +25,32 @@ export default function Collection() {
         </Head>
 
         <h1>Bored Ape NFTs collection</h1>
-        {products.map((product) => {
+        {props.products.map((product) => {
           return (
-            <div key={`product- ${product.id}`}>
-              {product.name} {product.price}
+            <div key={`product- ${product.id}`} css={collectionStyle}>
+              <Link href={`/collection/${product.id}`}>
+                <a data-test-id="product-<product id>">
+                  <Image
+                    data-test-id="product-image"
+                    src={`/images/${product.id}.png`}
+                    width="300"
+                    height="300"
+                  />
+                  <div>{product.name}</div>
+                  <div>{product.price}</div>
+                </a>
+              </Link>
             </div>
           );
         })}
       </Layout>
     </div>
   );
+}
+// READ FILES FROM FILES SYSTEM
+// CONNECT TO THE DATABASE
+export function getServerSideProps() {
+  return {
+    props: { products: products },
+  };
 }

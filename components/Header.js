@@ -7,9 +7,9 @@ const navigationStyle = css`
   position: relative;
   background-color: none;
   color: white;
-  padding: 10px 100px;
+  padding: 10px 10px;
   /* border-radius: 10px; */
-  margin: 8px 8px 20px;
+  margin: 8px 8px 50px;
 
   float: right;
 
@@ -36,7 +36,7 @@ export default function Header() {
           <Link href="/">
             <a>Home</a>
           </Link>
-          <Link href="/collection">
+          <Link href="/collection" data-test-id="products-link">
             <a>Collection</a>
           </Link>
           <Link href="/checkout">

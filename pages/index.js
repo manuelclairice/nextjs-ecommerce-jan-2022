@@ -20,7 +20,7 @@ export default function Home() {
       </section>
 
       <section>
-        <h2>Collection of the week</h2>
+        <h2>Best sellers of the week</h2>
         <ProductSection />
       </section>
     </Layout>
