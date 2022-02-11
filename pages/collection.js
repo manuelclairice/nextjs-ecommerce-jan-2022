@@ -6,6 +6,9 @@ import Layout from '../components/Layout';
 import products from '../util/database';
 
 const collectionStyle = css`
+  display: inline-block;
+  align-items: center;
+  justify-content: space-between;
   border-radius: 10px;
   border: 1px solid #ccc;
   padding: 15px;

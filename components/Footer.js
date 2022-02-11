@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import Image from 'next/image';
 
 const footerStyle = css`
-  position: absolute;
+  position: relative;
   /* display: flex; */
   flex: 1;
   padding: 10px 10px 0px 10px;
@@ -43,7 +43,7 @@ export default function Footer() {
         target="_blank"
         rel="noopener noreferrer"
       >
-        Powered by{' '}
+        Inspired by{' '}
         <span css={footerStyleLogo}>
           <Image
             src="/bayc-footer.png"
