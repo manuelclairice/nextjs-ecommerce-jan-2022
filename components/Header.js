@@ -5,10 +5,13 @@ import blockChainLogo from '../public/blockchain-logo.png';
 
 const navigationStyle = css`
   position: relative;
+  /* position: -webkit-sticky;
+  position: sticky;
+  top: 20px; */
   background-color: none;
   color: white;
   padding: 10px 10px;
-  /* border-radius: 10px; */
+  border-radius: 10px;
   margin: 8px 8px 50px;
 
   float: right;

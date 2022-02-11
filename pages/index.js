@@ -77,6 +77,13 @@ const collectionStyle = css`
   width: 150px;
   justify-content: space-evenly;
   align-items: stretch;
+  will-change: transform;
+  transition: transform 450ms;
+
+  :hover {
+    transition: transform 125ms;
+    transform: translateY(-10px);
+  }
 `;
 
 export default function Home(props) {
