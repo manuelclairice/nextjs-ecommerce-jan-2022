@@ -61,6 +61,8 @@ export default function Collection(props) {
 // CONNECT TO THE DATABASE
 export function getServerSideProps() {
   return {
-    props: { products: products },
+    props: {
+      products: products,
+    },
   };
 }
