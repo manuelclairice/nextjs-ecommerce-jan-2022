@@ -39,7 +39,7 @@ export default function Footer() {
     <footer css={footerStyle}>
       <a
         css={footerAStyle}
-        href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+        href="https://opensea.io/collection/boredapeyachtclub"
         target="_blank"
         rel="noopener noreferrer"
       >
