@@ -18,11 +18,19 @@ const collectionStyle = css`
   align-items: stretch;
   will-change: transform;
   transition: transform 450ms;
+  cursor: pointer;
 
   :hover {
     transition: transform 125ms;
     transform: translateY(-10px);
   }
+`;
+
+const collectionTextStyle = css`
+  text-decoration: none;
+  color: #fed2ff;
+  font-weight: bold;
+  font-size: 1.2rem;
 `;
 
 export default function Collection(props) {
@@ -39,15 +47,20 @@ export default function Collection(props) {
           return (
             <div key={`product- ${product.id}`} css={collectionStyle}>
               <Link href={`/collection/${product.id}`}>
-                <a data-test-id="product-<product id>">
+                <a
+                  data-test-id="product-<product id>"
+                  css={collectionTextStyle}
+                >
                   <Image
                     data-test-id="product-image"
                     src={`/images/${product.id}.png`}
                     width="300"
                     height="300"
                   />
-                  <div>{product.name}</div>
-                  <div>{product.price}</div>
+                  <div>
+                    <div>{product.name}</div>
+                    <div>{product.price}</div>
+                  </div>
                 </a>
               </Link>
             </div>
