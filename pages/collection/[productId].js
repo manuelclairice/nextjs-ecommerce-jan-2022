@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 // import { getCookieParser } from 'next/dist/server/api-utils';
 import Head from 'next/head';
 import Image from 'next/image';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
 import { getParsedCookie, setParsedCookie } from '../../util/cookies';
-import products, { readProducts } from '../../util/database';
+import { getSingleProduct } from '../../util/database';
 
 const addButtonStyle = css`
   margin-top: 20px;
@@ -94,7 +94,7 @@ export default function SingleProduct(props) {
   }
 
   function quantityCountDown() {
-    const cookieValue = JSON.parse(Cookies.get('cart') || []);
+    const cookieValue = getParsedCookie('cart') || [];
     const newCookie = cookieValue.map((cookieObject) => {
       if (cookieObject.id === props.product.id) {
         return { ...cookieObject, quantity: cookieObject.quantity - 1 };
@@ -152,17 +152,17 @@ export default function SingleProduct(props) {
     </Layout>
   );
 }
-export function getServerSideProps(context) {
+export async function getServerSideProps(context) {
   const productId = context.query.productId;
-  const matchingProduct = products.find((product) => product.id === productId);
+  // const matchingProduct = products.find((product) => product.id === productId);
   const productWithCookies = context.req.cookies.cart || '[]';
 
   const cart = JSON.parse(productWithCookies);
 
-  // readProducts();
+  const product = await getSingleProduct(productId);
   return {
     props: {
-      product: matchingProduct,
+      product: product,
       cart: cart,
       // productId: productId,
     },

@@ -68,7 +68,7 @@ const navigationStyle = css`
   }
 `;
 
-export default function Header() {
+export default function Header(props) {
   const cookieValue = getParsedCookie('cart') || [];
 
   console.log('cookieValue', cookieValue);
@@ -107,7 +107,7 @@ export default function Header() {
             <a>Checkout</a>
           </Link>
           <Link href="/cart">
-            <a data-test-id="cart-count">
+            <a data-test-id="cart-count" {...props.children}>
               cart ({isNaN(totalQuantity) ? '0' : totalQuantity})
             </a>
           </Link>
@@ -115,16 +115,4 @@ export default function Header() {
       </nav>
     </header>
   );
-}
-
-export function getServerSideProps(context) {
-  const productWithCookies = context.req.cookies.cart || '[]';
-
-  const cart = JSON.parse(productWithCookies);
-  return {
-    props: {
-      cart: cart,
-      // productId: productId,
-    },
-  };
 }

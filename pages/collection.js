@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import products from '../util/database';
+import { getSingleProduct } from '../util/database';
 
 const collectionStyle = css`
   display: inline-block;
@@ -72,10 +72,28 @@ export default function Collection(props) {
 }
 // READ FILES FROM FILES SYSTEM
 // CONNECT TO THE DATABASE
-export function getServerSideProps() {
+// export function getServerSideProps() {
+//   return {
+//     props: {
+//       products: products,
+//     },
+//   };
+// }
+
+
+export async function getServerSideProps(context) {
+  const productId = context.query.productId;
+  // const matchingProduct = products.find((product) => product.id === productId);
+  const productWithCookies = context.req.cookies.cart || '[]';
+
+  const cart = JSON.parse(productWithCookies);
+
+  const product = await getSingleProduct(productId);
   return {
     props: {
-      products: products,
+      product: product,
+      cart: cart,
+      // productId: productId,
     },
   };
 }
