@@ -1,12 +1,12 @@
-import { config } from 'dotenv-safe';
-import postgres from 'postgres';
+// import { config } from 'dotenv-safe';
+// import postgres from 'postgres';
 
-config();
+// config();
 
-const sql = postgres();
+// const sql = postgres();
 
-console.log(
-  await sql`
-SELECT * FROM nfts;
-`,
-);
+// console.log(
+//   await sql`
+// SELECT * FROM nfts;
+// `,
+// );

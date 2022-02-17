@@ -107,8 +107,9 @@ export default function Header(props) {
             <a>Checkout</a>
           </Link>
           <Link href="/cart">
-            <a data-test-id="cart-count" {...props.children}>
-              cart ({isNaN(totalQuantity) ? '0' : totalQuantity})
+            <a data-test-id="cart-count">
+              cart ({isNaN(totalQuantity) ? '0' : totalQuantity}){' '}
+              {JSON.stringify(props.cart) ? '0' : props.cart}
             </a>
           </Link>
         </div>

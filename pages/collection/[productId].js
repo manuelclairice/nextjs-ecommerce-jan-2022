@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
 import { getParsedCookie, setParsedCookie } from '../../util/cookies';
-import { getSingleProduct } from '../../util/database';
+import { getSingleProduct, products } from '../../util/database';
 
 const addButtonStyle = css`
   margin-top: 20px;
