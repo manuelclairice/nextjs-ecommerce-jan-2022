@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import Layout from '../../components/Layout';
 import { getParsedCookie, setParsedCookie } from '../../util/cookies';
-import { getSingleProduct, products } from '../../util/database';
+import { getSingleProduct } from '../../util/database';
 
 const addButtonStyle = css`
   margin-top: 20px;
@@ -47,64 +47,95 @@ const singleProductTextStyle = css`
 
 export default function SingleProduct(props) {
   const [productAddedToCart, setProductAddedToCart] = useState(props.cart);
+  const [quantity, setQuantity] = useState(1);
 
-  function addProductToCArt(id) {
+  function addProductToCart(id, quantities) {
+    console.log('', id, quantities);
     // GET THE VALUE OF THE COOKIE
-    const cookieValue = getParsedCookie('cart') || [];
 
-    console.log('current value', cookieValue);
+    const value = {
+      productId: id,
+      quantity: quantities,
+    };
+    // const cookieValue = getParsedCookie('cart') || [];
+
+    // console.log('current value', cookieValue);
     // UPDATE THE COOKIE
-    const productIdOnArray = cookieValue.some((cookieObject) => {
-      return cookieObject.id === id;
-    });
+    // const productIdOnArray = cookieValue.some((cookieObject) => {
+    //   return cookieObject.id === id;
+    // });
 
     let newCookie;
-    if (productIdOnArray) {
-      newCookie = cookieValue.filter((cookieObject) => {
-        return cookieObject.id !== id;
-      });
+    if (props.cart !== '[]') {
+      // (productIdOnArray)
+      // newCookie = cookieValue.filter((cookieObject) => {
+      //   return cookieObject.id !== id;
+      // });
+
+      // CHECKS IF THE PRODUCT WAS ALREADY ADDED TO THE CART
+      const productIsAdded = props.cart.some(
+        (addedObject) => addedObject.productId === props.product.id,
+      );
+      if (productIsAdded) {
+        const newCookieAdded = props.cart.map((cookieObject) => {
+          if (cookieObject.productId === props.product.id) {
+            cookieObject.quantity = cookieObject.quantity + quantities;
+          }
+          return cookieObject;
+        });
+
+        newCookie = [...newCookieAdded];
+      } else {
+        newCookie = [...props.cart, { id: id, quantity: quantities }];
+      }
     } else {
-      newCookie = [...cookieValue, { id: id, quantity: 1 }];
+      newCookie = value;
     }
     // SET THE NEW VALUE OF THE COOKIE
     setProductAddedToCart(newCookie);
     setParsedCookie('cart', newCookie);
   }
-  // CHECKS IF THE PRODUCT WAS ALREADY ADDED TO THE CART
-  const productIsAdded = productAddedToCart.some((addedObject) => {
-    return addedObject.id === props.product.id;
-  });
 
-  const currentProduct = productAddedToCart.find(
-    (cookieObject) => cookieObject.id === props.product.id,
-  );
+  function changeAmount(event) {
+    let { value, min, max } = event.target;
+    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+    setQuantity(value);
+  }
+  // CHECKS IF THE PRODUCT WAS ALREADY ADDED TO THE CART
+  // const productIsAdded = productAddedToCart.some((addedObject) =>
+  //   addedObject.id === props.product.id,
+  // );
+
+  // const currentProduct = productAddedToCart.find(
+  //   (cookieObject) => cookieObject.id === props.product.id,
+  // );
 
   // FUNCTIONS FOR THE COUNT BUTTON
-  function quantityCountUp() {
-    const cookieValue = getParsedCookie('cart') || [];
-    const newCookie = cookieValue.map((cookieObject) => {
-      if (cookieObject.id === props.product.id) {
-        return { ...cookieObject, quantity: cookieObject.quantity + 1 };
-      } else {
-        return cookieObject;
-      }
-    });
-    setProductAddedToCart(newCookie);
-    setParsedCookie('cart', newCookie);
-  }
+  // function quantityCountUp() {
+  //   const cookieValue = getParsedCookie('cart') || [];
+  //   // const newCookie = cookieValue.map((cookieObject) => {
+  //   //   if (cookieObject.id === props.product.id) {
+  //   //     return { ...cookieObject, quantity: cookieObject.quantity + 1 };
+  //     } else {
+  //       return cookieObject;
+  //     }
+  //   });
+  //   setProductAddedToCart(newCookie);
+  //   setParsedCookie('cart', newCookie);
+  // }
 
-  function quantityCountDown() {
-    const cookieValue = getParsedCookie('cart') || [];
-    const newCookie = cookieValue.map((cookieObject) => {
-      if (cookieObject.id === props.product.id) {
-        return { ...cookieObject, quantity: cookieObject.quantity - 1 };
-      } else {
-        return cookieObject;
-      }
-    });
-    setProductAddedToCart(newCookie);
-    setParsedCookie('cart', newCookie);
-  }
+  // function quantityCountDown() {
+  //   const cookieValue = getParsedCookie('cart') || [];
+  //   const newCookie = cookieValue.map((cookieObject) => {
+  //     if (cookieObject.id === props.product.id) {
+  //       return { ...cookieObject, quantity: cookieObject.quantity - 1 };
+  //     } else {
+  //       return cookieObject;
+  //     }
+  //   });
+  //   setProductAddedToCart(newCookie);
+  //   setParsedCookie('cart', newCookie);
+  // }
 
   return (
     <Layout>
@@ -124,19 +155,32 @@ export default function SingleProduct(props) {
           <div data-test-id="product-price">Price: {props.product.price}</div>
         </div>
         <div>
-          {currentProduct && (
+          {/* {currentProduct && (
             <div data-test-id="product-quantity">
               <button onClick={() => quantityCountDown()}>- </button>
               {currentProduct.quantity}
               <button onClick={() => quantityCountUp()}>+ </button>
             </div>
-          )}
+          )} */}
+          <label>
+            {' '}
+            Select quantity
+            <input
+              data-test-id="product-quantity"
+              type="number"
+              min="1"
+              max="20"
+              value={quantity}
+              onChange={(event) => changeAmount(event)}
+            />
+          </label>
           <button
             data-test-id="product-add-to-cart"
             css={addButtonStyle}
-            onClick={() => addProductToCArt(props.product.id)}
+            onClick={() => addProductToCart(props.product.id, quantity)}
           >
-            {productIsAdded ? 'Remove from cart' : 'Add to cart'}
+            {/* {productIsAdded ? 'Remove from cart' : 'Add to cart'} */}
+            Add to cart
           </button>
         </div>
 
@@ -152,19 +196,24 @@ export default function SingleProduct(props) {
     </Layout>
   );
 }
-export async function getServerSideProps(context) {
-  const productId = context.query.productId;
-  // const matchingProduct = products.find((product) => product.id === productId);
-  const productWithCookies = context.req.cookies.cart || '[]';
 
+export async function getServerSideProps(context) {
+  // const productId = context.query.productId;
+  // const matchingProduct = products.find((product) => product.id === productId);
+  const productId = context.query.productId;
+
+  const product = await getSingleProduct(Number(productId));
+
+  console.log(productId);
+
+  const productWithCookies = context.req.cookies.cart || '[]';
   const cart = JSON.parse(productWithCookies);
 
-  const product = await getSingleProduct(productId);
   return {
     props: {
       product: product,
       cart: cart,
-      // productId: productId,
+      productId: productId,
     },
   };
 }

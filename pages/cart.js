@@ -15,5 +15,33 @@ Export default function ShoppingCArt(props){
 
   const newCookie = cookieValue.map((cookieObject) => {
 
-  }
+  });
+  return (
+    <div>
+      <Layout>
+        <Head>
+        <title>Bored Ape NFTs cart</title>
+          <meta description="A look of you have added to your cart" />
+        </Head>
+      </Layout>
+    </div>
+  );
+}
+
+export async function getServerSideProps(context) {
+  // const productId = context.query.productId;
+  // const matchingProduct = products.find((product) => product.id === productId);
+  const productWithCookies = context.req.cookies.cart || '[]';
+
+  const cart = JSON.parse(productWithCookies);
+
+  const products = await getProducts();
+
+  return {
+    props: {
+      products: products,
+      cart: cart,
+      // productId: productId,
+    },
+  };
 }

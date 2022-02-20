@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 // import Cookies from 'js-cookie';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import blockChainLogo from '../public/blockchain-logo.png';
 import { getParsedCookie } from '../util/cookies';
 
@@ -68,14 +69,31 @@ const navigationStyle = css`
   }
 `;
 
-export default function Header(props) {
-  const cookieValue = getParsedCookie('cart') || [];
+export default function Header() {
+  const [cartAmount, setCartAmount] = useState(0);
 
-  console.log('cookieValue', cookieValue);
+  const currentCookies = getParsedCookie('cart');
 
-  const totalQuantity = cookieValue.reduce((previousValue, currentValue) => {
-    return previousValue + currentValue.quantity;
-  }, 0);
+  console.log('currentCookies', currentCookies);
+
+  useEffect(() => {
+    if (currentCookies !== undefined) {
+      const amount = currentCookies.map((event) => event.quantity);
+      const reduceAmount = amount.reduce((a, b) => a + b, 0);
+      const reducer = (previousValue, currentValue) =>
+        previousValue + currentValue;
+      setCartAmount(amount.reduce(reducer));
+      setCartAmount(reduceAmount);
+    } else {
+      setCartAmount(0);
+    }
+  }, [currentCookies]);
+  // const amountAddedToCart = cookieValue.reduce(
+  //   (previousValue, currentValue) => {
+  //     return previousValue + currentValue.quantity;
+  //   },
+  //   0,
+  // );
 
   return (
     <header css={headerStyle}>
@@ -96,7 +114,7 @@ export default function Header(props) {
         </a>
       </Link>
       <nav css={navigationStyle}>
-        <div data-test-id="cart-link" css={menuNavStyle}>
+        <div css={menuNavStyle}>
           <Link href="/">
             <a>Home</a>
           </Link>
@@ -106,10 +124,10 @@ export default function Header(props) {
           <Link href="/checkout">
             <a>Checkout</a>
           </Link>
-          <Link href="/cart">
+          <Link href="/cart" data-test-id="cart-link">
             <a data-test-id="cart-count">
-              cart ({isNaN(totalQuantity) ? '0' : totalQuantity}){' '}
-              {JSON.stringify(props.cart) ? '0' : props.cart}
+              cart({cartAmount})
+              {/* {JSON.stringify(props.cart) ? '0' : props.cart} */}
             </a>
           </Link>
         </div>

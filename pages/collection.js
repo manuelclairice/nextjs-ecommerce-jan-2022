@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
 import Layout from '../components/Layout';
-import { getSingleProduct } from '../util/database';
+import { getProducts } from '../util/database';
 
 const collectionStyle = css`
   display: inline-block;
@@ -80,18 +80,18 @@ export default function Collection(props) {
 //   };
 // }
 
-
 export async function getServerSideProps(context) {
-  const productId = context.query.productId;
+  // const productId = context.query.productId;
   // const matchingProduct = products.find((product) => product.id === productId);
   const productWithCookies = context.req.cookies.cart || '[]';
 
   const cart = JSON.parse(productWithCookies);
 
-  const product = await getSingleProduct(productId);
+  const products = await getProducts();
+
   return {
     props: {
-      product: product,
+      products: products,
       cart: cart,
       // productId: productId,
     },

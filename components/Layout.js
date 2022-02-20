@@ -8,11 +8,9 @@ export default function Layout(props) {
       <Head>
         <link rel="icon" href="/blockchain-favicon.ico" />
       </Head>
-      <Header {...props.children} />
+      <Header />
       <main>{props.children}</main>
-      <section>
-        <Footer />
-      </section>
+      <Footer />
     </>
   );
 }

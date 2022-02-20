@@ -4,7 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 // import HeroImage from '../components/HeroImage';
 import Layout from '../components/Layout';
-import { getSingleProduct } from '../util/database';
+import { getProducts } from '../util/database';
+
+// import { getSingleProduct } from '../util/database';
 
 // import heroPicture from '../public/images/bayc-mutant-hero.jpeg';
 
@@ -139,16 +141,17 @@ export default function Home(props) {
 // }
 
 export async function getServerSideProps(context) {
-  const productId = context.query.productId;
   // const matchingProduct = products.find((product) => product.id === productId);
   const productWithCookies = context.req.cookies.cart || '[]';
 
   const cart = JSON.parse(productWithCookies);
 
-  const product = await getSingleProduct(productId);
+  const products = await getProducts();
+  // console.log('check');
+
   return {
     props: {
-      product: product,
+      products: products,
       cart: cart,
       // productId: productId,
     },
