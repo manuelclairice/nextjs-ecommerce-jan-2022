@@ -147,6 +147,7 @@ export async function getServerSideProps(context) {
   const cart = JSON.parse(productWithCookies);
 
   const products = await getProducts();
+  // const products = undefined;
   // console.log('check');
 
   return {

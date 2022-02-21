@@ -11,6 +11,9 @@ import { getParsedCookie } from '../util/cookies';
 const headerStyle = css`
   display: flex;
   justify-content: space-between;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 20px;
 `;
 
 const logoStyle = css`
