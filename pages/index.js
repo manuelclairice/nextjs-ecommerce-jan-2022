@@ -56,7 +56,7 @@ const heroTextStyle = css`
   left: 40px;
   width: 800px;
   height: auto;
-  margin-top: 50px;
+  margin-top: 180px;
   margin-bottom: 10px;
   font-weight: 700;
   font-size: 40px;
@@ -81,6 +81,19 @@ const collectionStyle = css`
   align-items: stretch;
   will-change: transform;
   transition: transform 450ms;
+
+  /* :hover {
+    transition: transform 125ms;
+    transform: translateY(-10px);
+  } */
+`;
+
+const collectionTextStyle = css`
+  text-decoration: none;
+  color: #fed2ff;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
 
   :hover {
     transition: transform 125ms;
@@ -113,7 +126,10 @@ export default function Home(props) {
           return (
             <div key={`product- ${product.id}`} css={collectionStyle}>
               <Link href={`/collection/${product.id}`}>
-                <a data-test-id="product-<product id>">
+                <a
+                  data-test-id="product-<product id>"
+                  css={collectionTextStyle}
+                >
                   <Image
                     data-test-id="product-image"
                     src={`/images/${product.id}.png`}

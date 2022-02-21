@@ -1,8 +1,8 @@
 import camelcaseKeys from 'camelcase-keys';
-// import { config } from 'dotenv-safe';
+import { config } from 'dotenv-safe';
 import postgres from 'postgres';
 
-// config();
+config();
 
 // function connectOneTimeToDatabase() {
 //   let sql;
