@@ -10,7 +10,7 @@ import {
   setParsedCookie,
 } from '../util/cookies';
 // import { getProducts, getSingleProduct } from '../util/database';
-import { getSingleProduct } from '../util/database';
+import { getProducts, getSingleProduct } from '../util/database';
 
 const shoppingCartStyle = css`
   display: inline-block;
@@ -203,20 +203,21 @@ export default function ShoppingCArt(props) {
 export async function getServerSideProps(context) {
   // const productId = context.query.productId;
   // const matchingProduct = products.find((product) => product.id === productId);
-  const productWithCookies = context.req.cookies.cart || '[]';
+  const cartWithCookie = context.req.cookies.cart || '[]';
 
-  const cartWithCookie = JSON.parse(productWithCookies);
+  const cart = JSON.parse(cartWithCookie);
 
   // const products = await getProducts();
 
-  const productId = context.query.productId;
+  // const productId = context.query.productId;
 
-  const products = await getSingleProduct(Number(productId));
+  // const products = await getSingleProduct(Number(productId));
+  const products = await getProducts();
 
   return {
     props: {
       products: products,
-      currentCookies: cartWithCookie,
+      currentCookies: cart,
       // productId: productId,
     },
   };

@@ -1,12 +1,12 @@
 import Cookies from 'js-cookie';
 
 export function getParsedCookie(key) {
-  // const cookieValue = Cookies.get(key); // Type is string | undefined
+  const cookieValue = Cookies.get(key); // Type is string | undefined
 
   // Narrowing
-  // if (!cookieValue) {
-  //   return undefined;
-  // }
+  if (!cookieValue) {
+    return undefined;
+  }
 
   try {
     return JSON.parse(Cookies.get(key)); // Type is string
