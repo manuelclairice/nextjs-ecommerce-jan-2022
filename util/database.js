@@ -1,4 +1,4 @@
-import camelcaseKeys from 'camelcase-keys';
+// import camelcaseKeys from 'camelcase-keys';
 import { config } from 'dotenv-safe';
 import postgres from 'postgres';
 
@@ -46,7 +46,8 @@ export async function getProducts() {
   const products = await sql`
   SELECT * FROM nfts;`;
   console.log(products);
-  return products.map((product) => camelcaseKeys(product));
+  return products;
+  // return products.map((product) => camelcaseKeys(product));
 }
 
 export async function getSingleProduct(id) {

@@ -1,16 +1,13 @@
 import { css } from '@emotion/react';
+// import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
-import {
-  deleteCookie,
-  getParsedCookie,
-  setParsedCookie,
-} from '../util/cookies';
+import { setParsedCookie } from '../util/cookies';
 // import { getProducts, getSingleProduct } from '../util/database';
-import { getProducts, getSingleProduct } from '../util/database';
+import { getProducts } from '../util/database';
 
 const shoppingCartStyle = css`
   display: inline-block;
@@ -23,14 +20,14 @@ const shoppingCartStyle = css`
   width: 150px;
   justify-content: space-evenly;
   align-items: stretch;
-  will-change: transform;
+  /* will-change: transform;
   transition: transform 450ms;
   cursor: pointer;
 
   :hover {
     transition: transform 125ms;
     transform: translateY(-10px);
-  }
+  } */
 `;
 
 const checkoutButtonStyle = css`
@@ -59,31 +56,54 @@ const checkoutButtonStyle = css`
 
 export default function ShoppingCArt(props) {
   // const [sumProductPrice, setSumProductPrice] = useState([]);
-  const currentCookies = getParsedCookie('cart');
-  const [productAddedToCart, setProductAddedToCart] = useState(
-    props.currentCookies,
-  );
+  // const currentCookies = getParsedCookie('cart');
+  const [productAddedToCart, setProductAddedToCart] = useState([0]);
+  const [productPrice, setProductPrice] = useState([0]);
+  const [productAmount, setProductAmount] = useState([0]);
 
-  let amountOfProductAddedToCart = 0;
-  const sum = [];
+  // let amountOfProductAddedToCart = 0;
+  // const sum = [];
 
-  function eventHandler(id, amount) {
-    console.log('id:', id, 'amount:', amount);
+  // function eventHandler(id, amount) {
+  //   console.log('id:', id, 'amount:', amount);
 
-    const newCartAmount = productAddedToCart.filter(
-      (event) => event.productId !== id,
-    );
+  //   const newCartAmount = productAddedToCart.filter(
+  //     (event) => event.productId !== id,
+  //   );
 
-    if (newCartAmount.length) {
-      newCartAmount.forEach((cookie) => {
-        setParsedCookie('cart', [cookie]);
+  //   if (newCartAmount.length) {
+  //     newCartAmount.forEach((cookie) => {
+  //       setParsedCookie('cart', [cookie]);
+  //     });
+  //     setProductAddedToCart(newCartAmount);
+  //   } else {
+  //     deleteCookie('cart');
+  //     setProductAddedToCart([]);
+  //   }
+  // }
+
+  useEffect(() => {
+    const getAmount = () => {
+      const amountInCart = props.cart.map((product) => {
+        return product.productAmount;
       });
-      setProductAddedToCart(newCartAmount);
-    } else {
-      deleteCookie('cart');
-      setProductAddedToCart([]);
-    }
-  }
+
+      const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
+
+      setProductAmount(sum);
+
+      const cartPrice = productAddedToCart.map((product) => {
+        return props.products.price * product.productAmount;
+      });
+
+      const totalCartPrice = cartPrice.reduce(
+        (productAdded, a) => productAdded + a,
+        0,
+      );
+      setProductPrice(totalCartPrice);
+    };
+    getAmount();
+  });
 
   if (productAddedToCart === undefined || !productAddedToCart.length) {
     return (
@@ -104,6 +124,35 @@ export default function ShoppingCArt(props) {
     );
   }
 
+  function handleDeleteCookie(id) {
+    const newCookie = productAddedToCart.filter((cookieObject) => {
+      return cookieObject.id !== id;
+    });
+    console.log('newCookie', newCookie);
+
+    setProductAddedToCart(newCookie);
+    setParsedCookie('cart', [newCookie]);
+    // Cookies.set('cart', JSON.stringify(newCookie));
+
+    const amountInCart = newCookie.map((product) => {
+      return product.productAmount;
+    });
+
+    const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
+
+    setProductAmount(sum);
+
+    const cartPrice = newCookie.map((product) => {
+      return props.products.price * product.productAmount;
+    });
+
+    const totalCartPrice = cartPrice.reduce(
+      (productAdded, a) => productAdded + a,
+      0,
+    );
+    setProductPrice(totalCartPrice);
+  }
+
   return (
     <div>
       <Layout>
@@ -119,82 +168,60 @@ export default function ShoppingCArt(props) {
         </section>
 
         <section>
-          <article>
-            {props.products.map((product) => {
-              return productAddedToCart.map((cookie) => {
-                return (
-                  product.id === cookie.productId && (
-                    <div
-                      key={`productInCart_${props.products.id}`}
-                      data-test-id="cart-product-<product id>"
-                    >
-                      <div>
-                        <Image
-                          src={`/images/${props.products.id}.png`}
-                          width="300"
-                          height="300"
-                        />
-                        <div>Ref: {product.name}</div>
-                      </div>
-                      <div>Price: {product.price}</div>
-                      <div>Quantity: {cookie.quantity}</div>
-                      <div data-test-id="cart-total">
-                        Total:{' '}
-                        {
-                          (amountOfProductAddedToCart = (
-                            product.price * cookie.quantity
-                          ).toFixed(2))
-                        }
-                        {sum.push(amountOfProductAddedToCart)}
-                      </div>
-                      <button
-                        onClick={() =>
-                          eventHandler(cookie.productId, cookie.quantity)
-                        }
-                        data-test-id="cart-product-remove-<product id>"
-                      >
-                        x
-                      </button>
-                    </div>
-                  )
-                );
-              });
+          <article data-test-id="cart-product-<product id>">
+            {/* {props.products.map((cookie) => {
+            return{' '} */}
+            {productAddedToCart.map((product) => {
+              return (
+                <div
+                  key={`product-${product.id}`}
+                  data-test-id="cart-product-<product id>"
+                >
+                  <div>
+                    <a css={shoppingCartStyle}>
+                      <Image
+                        src={`/images/${props.cart.id}.png`}
+                        alt={`Bored Ape number${product.name}`}
+                        width="300"
+                        height="300"
+                      />
+                    </a>
+                    <div>Ref: {props.cart.name}</div>
+                  </div>
+                  <div>Price: {props.products.price}</div>
+                  <div>Quantity: {product.productAmount}</div>
+                  <span data-test-id="cart-total">
+                    Total:
+                    {product.productAmount < 0
+                      ? handleDeleteCookie(product.id)
+                      : product.price * product.productAmount}{' '}
+                  </span>
+                  <button
+                    onClick={() => handleDeleteCookie(product.id)}
+                    data-test-id="cart-product-remove-<product id>"
+                  >
+                    x
+                  </button>
+                </div>
+              );
             })}
           </article>
-
-          <article>
-            <div>
-              <h2>What you are about to add to your NFTs collection</h2>
-              <div>
-                <a css={shoppingCartStyle}>
-                  <Image
-                    src={`/images/${props.products.id}.png`}
-                    width="300"
-                    height="300"
-                  />
-                  <div>
-                    <div>{props.products.name}</div>
-                    <div>{props.products.price}</div>
-                  </div>
-                </a>
-                <p>
-                  <span>Total:</span>
-                </p>
-                {/* <p>{sum.reduce((a, b) => a + b)}</p> */}
-                <Link href="/checkout">
-                  <a>
-                    <button
-                      data-test-id="cart-checkout"
-                      css={checkoutButtonStyle}
-                    >
-                      Checkout
-                    </button>
-                  </a>
-                </Link>
-              </div>
-            </div>
-          </article>
         </section>
+        <div>
+          <h3>
+            Total: {productPrice} Euro for {productAmount}{' '}
+            {productAmount > 1 ? 'NFTs' : 'NFT'}
+          </h3>
+        </div>
+        <div>
+          <Link href="/checkout">
+            <a>
+              <button data-test-id="cart-checkout" css={checkoutButtonStyle}>
+                Checkout
+              </button>
+            </a>
+          </Link>
+        </div>
       </Layout>
     </div>
   );
@@ -217,7 +244,7 @@ export async function getServerSideProps(context) {
   return {
     props: {
       products: products,
-      currentCookies: cart,
+      cart: cart,
       // productId: productId,
     },
   };

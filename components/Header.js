@@ -72,12 +72,13 @@ const navigationStyle = css`
   }
 `;
 
-export default function Header() {
-  const [cartAmount, setCartAmount] = useState(0);
+export default function Header(props) {
+  const [cartAmount, setCartAmount] = useState(props.products);
 
   const currentCookies = getParsedCookie('cart');
 
   console.log('currentCookies', currentCookies);
+  // console.log('props', props);
 
   useEffect(() => {
     if (currentCookies !== undefined) {

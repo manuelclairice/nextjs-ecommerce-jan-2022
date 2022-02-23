@@ -8,7 +8,7 @@ export default function Layout(props) {
       <Head>
         <link rel="icon" href="/blockchain-favicon.ico" />
       </Head>
-      <Header />
+      <Header nft={props.nft} />
       <main>{props.children}</main>
       <Footer />
     </>
