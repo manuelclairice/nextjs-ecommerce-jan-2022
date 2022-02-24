@@ -81,11 +81,12 @@ const collectionStyle = css`
   align-items: stretch;
   will-change: transform;
   transition: transform 450ms;
+  cursor: pointer;
 
-  /* :hover {
+  :hover {
     transition: transform 125ms;
     transform: translateY(-10px);
-  } */
+  }
 `;
 
 const collectionTextStyle = css`
@@ -93,12 +94,6 @@ const collectionTextStyle = css`
   color: #fed2ff;
   font-weight: bold;
   font-size: 1.2rem;
-  cursor: pointer;
-
-  :hover {
-    transition: transform 125ms;
-    transform: translateY(-10px);
-  }
 `;
 
 export default function Home(props) {

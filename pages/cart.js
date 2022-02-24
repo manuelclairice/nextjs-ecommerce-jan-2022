@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
-import { setParsedCookie } from '../util/cookies';
+import { getParsedCookie, setParsedCookie } from '../util/cookies';
 // import { getProducts, getSingleProduct } from '../util/database';
 import { getProducts } from '../util/database';
 
@@ -55,103 +55,93 @@ const checkoutButtonStyle = css`
 `;
 
 export default function ShoppingCArt(props) {
-  // const [sumProductPrice, setSumProductPrice] = useState([]);
-  // const currentCookies = getParsedCookie('cart');
   const [productAddedToCart, setProductAddedToCart] = useState([0]);
-  const [productPrice, setProductPrice] = useState([0]);
-  const [productAmount, setProductAmount] = useState([0]);
-
-  // let amountOfProductAddedToCart = 0;
-  // const sum = [];
-
-  // function eventHandler(id, amount) {
-  //   console.log('id:', id, 'amount:', amount);
-
-  //   const newCartAmount = productAddedToCart.filter(
-  //     (event) => event.productId !== id,
-  //   );
-
-  //   if (newCartAmount.length) {
-  //     newCartAmount.forEach((cookie) => {
-  //       setParsedCookie('cart', [cookie]);
-  //     });
-  //     setProductAddedToCart(newCartAmount);
-  //   } else {
-  //     deleteCookie('cart');
-  //     setProductAddedToCart([]);
-  //   }
-  // }
-
-  useEffect(() => {
-    const getAmount = () => {
-      const amountInCart = props.cart.map((product) => {
-        return product.productAmount;
-      });
-
-      const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
-
-      setProductAmount(sum);
-
-      const cartPrice = productAddedToCart.map((product) => {
-        return props.products.price * product.productAmount;
-      });
-
-      const totalCartPrice = cartPrice.reduce(
-        (productAdded, a) => productAdded + a,
-        0,
-      );
-      setProductPrice(totalCartPrice);
-    };
-    getAmount();
+  const cookieValue = getParsedCookie('cart') || [];
+  const newCookie = cookieValue.map((cookieObject) => {
+    function addProducts() {
+      for (const singleProduct of props.products) {
+        if (singleProduct.id === cookieObject.id) {
+          return {
+            ...cookieObject,
+            name: singleProduct.name,
+            price: singleProduct.price,
+          };
+        }
+      }
+    }
+    return addProducts();
   });
+  setParsedCookie('cart', newCookie);
 
-  if (productAddedToCart === undefined || !productAddedToCart.length) {
-    return (
-      <div>
-        <Layout>
-          <Head>
-            <title>Bored Ape NFTs cart</title>
-            <meta
-              name="description"
-              content="A look of what you have added to the cart"
-            />
-          </Head>
-          <section>
-            <h1>Sorry --- Your cart is empty</h1>
-          </section>
-        </Layout>
-      </div>
+  const totalProductPrice = newCookie.reduce((previousValue, currentValue) => {
+    return previousValue + currentValue.price * currentValue.quantity;
+  }, 0);
+
+  function deleteFromCart(id) {
+    const cartAmount = getParsedCookie('cart') || [];
+
+    const updatedCookie = cartAmount.filter(
+      (cookieObject) => cookieObject.id !== id,
     );
+
+    setParsedCookie('cart', updatedCookie);
+    setProductAddedToCart(updatedCookie);
   }
 
-  function handleDeleteCookie(id) {
-    const newCookie = productAddedToCart.filter((cookieObject) => {
-      return cookieObject.id !== id;
-    });
-    console.log('newCookie', newCookie);
+  // const [productPrice, setProductPrice] = useState([0]);
+  // const [productAmount, setProductAmount] = useState([0]);
 
-    setProductAddedToCart(newCookie);
-    setParsedCookie('cart', [newCookie]);
-    // Cookies.set('cart', JSON.stringify(newCookie));
+  // useEffect(() => {
+  //   const getAmount = () => {
+  //     const amountInCart = props.cart.map((product) => {
+  //       return product.productAmount;
+  //     });
 
-    const amountInCart = newCookie.map((product) => {
-      return product.productAmount;
-    });
+  //     const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
 
-    const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
+  //     setProductAmount(sum);
 
-    setProductAmount(sum);
+  //     const cartPrice = productAddedToCart.map((product) => {
+  //       return props.products.price * product.productAmount;
+  //     });
 
-    const cartPrice = newCookie.map((product) => {
-      return props.products.price * product.productAmount;
-    });
+  //     const totalCartPrice = cartPrice.reduce(
+  //       (productAdded, a) => productAdded + a,
+  //       0,
+  //     );
+  //     setProductPrice(totalCartPrice);
+  //   };
+  //   getAmount();
+  // });
 
-    const totalCartPrice = cartPrice.reduce(
-      (productAdded, a) => productAdded + a,
-      0,
-    );
-    setProductPrice(totalCartPrice);
-  }
+  // function handleDeleteCookie(id) {
+  //   const newCookie = productAddedToCart.filter((cookieObject) => {
+  //     return cookieObject.id !== id;
+  //   });
+  //   console.log('newCookie', newCookie);
+
+  //   setProductAddedToCart(newCookie);
+  //   setParsedCookie('cart', [newCookie]);
+  //   // Cookies.set('cart', JSON.stringify(newCookie));
+
+  //   const amountInCart = newCookie.map((product) => {
+  //     return product.productAmount;
+  //   });
+
+  //   const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
+
+  //   setProductAmount(sum);
+
+  //   const cartPrice = newCookie.map((product) => {
+  //     return props.products.price * product.productAmount;
+  //   });
+
+  //   const totalCartPrice = cartPrice.reduce(
+  //     (productAdded, a) => productAdded + a,
+  //     0,
+  //   );
+  //   setProductPrice(totalCartPrice);
+  // }
 
   return (
     <div>
@@ -171,33 +161,34 @@ export default function ShoppingCArt(props) {
           <article data-test-id="cart-product-<product id>">
             {/* {props.products.map((cookie) => {
             return{' '} */}
-            {productAddedToCart.map((product) => {
+            {newCookie.map((singleProduct) => {
+              const totalProduct = singleProduct.price * singleProduct.quantity;
               return (
                 <div
-                  key={`product-${product.id}`}
+                  key={`product-${singleProduct.id}`}
                   data-test-id="cart-product-<product id>"
                 >
                   <div>
                     <a css={shoppingCartStyle}>
                       <Image
-                        src={`/images/${props.cart.id}.png`}
-                        alt={`Bored Ape number${product.name}`}
+                        src={`/images/${singleProduct.id}.png`}
+                        alt={`Bored Ape number${singleProduct.name}`}
                         width="300"
                         height="300"
                       />
                     </a>
-                    <div>Ref: {props.cart.name}</div>
+                    <div>Ref: {singleProduct.name}</div>
                   </div>
-                  <div>Price: {props.products.price}</div>
-                  <div>Quantity: {product.productAmount}</div>
+                  <div>Price: {singleProduct.price} euro</div>
+                  <div>
+                    Quantity: {singleProduct.quantity}{' '}
+                    {singleProduct.quantity > 1 ? 'NFTs' : 'NFT'}
+                  </div>
                   <span data-test-id="cart-total">
-                    Total:
-                    {product.productAmount < 0
-                      ? handleDeleteCookie(product.id)
-                      : product.price * product.productAmount}{' '}
+                    Total: {totalProduct} euro
                   </span>
                   <button
-                    onClick={() => handleDeleteCookie(product.id)}
+                    onClick={() => deleteFromCart(singleProduct.id)}
                     data-test-id="cart-product-remove-<product id>"
                   >
                     x
@@ -208,10 +199,7 @@ export default function ShoppingCArt(props) {
           </article>
         </section>
         <div>
-          <h3>
-            Total: {productPrice} Euro for {productAmount}{' '}
-            {productAmount > 1 ? 'NFTs' : 'NFT'}
-          </h3>
+          <h3>Total: {totalProductPrice} euro</h3>
         </div>
         <div>
           <Link href="/checkout">
@@ -234,17 +222,13 @@ export async function getServerSideProps(context) {
 
   const cart = JSON.parse(cartWithCookie);
 
-  // const products = await getProducts();
-
-  // const productId = context.query.productId;
-
   // const products = await getSingleProduct(Number(productId));
   const products = await getProducts();
 
   return {
     props: {
-      products: products,
-      cart: cart,
+      products,
+      cart,
       // productId: productId,
     },
   };

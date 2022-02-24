@@ -57,9 +57,9 @@ export default function SingleProduct(props) {
       productId: id,
       quantity: quantities,
     };
-    // const cookieValue = getParsedCookie('cart') || [];
+    const cookieValue = getParsedCookie('cart') || [];
 
-    // console.log('current value', cookieValue);
+    console.log('current value', cookieValue);
     // UPDATE THE COOKIE
     // const productIdOnArray = cookieValue.some((cookieObject) => {
     //   return cookieObject.id === id;

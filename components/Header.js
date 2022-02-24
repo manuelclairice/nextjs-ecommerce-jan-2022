@@ -84,9 +84,9 @@ export default function Header(props) {
     if (currentCookies !== undefined) {
       const amount = currentCookies.map((event) => event.quantity);
       const reduceAmount = amount.reduce((a, b) => a + b, 0);
-      const reducer = (previousValue, currentValue) =>
-        previousValue + currentValue;
-      setCartAmount(amount.reduce(reducer));
+      // const reducer = (previousValue, currentValue) =>
+      //   previousValue + currentValue;
+      // setCartAmount(amount.reduce(reducer));
       setCartAmount(reduceAmount);
     } else {
       setCartAmount(0);
@@ -125,9 +125,9 @@ export default function Header(props) {
           <Link href="/collection" data-test-id="products-link">
             <a>Collection</a>
           </Link>
-          <Link href="/checkout">
+          {/* <Link href="/checkout">
             <a>Checkout</a>
-          </Link>
+          </Link> */}
           <Link href="/cart" data-test-id="cart-link">
             <a data-test-id="cart-count">
               cart({cartAmount})
