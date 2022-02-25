@@ -152,7 +152,9 @@ export default function SingleProduct(props) {
         />
         <div css={singleProductTextStyle}>
           <div>Ref: {props.product.name}</div>
-          <div data-test-id="product-price">Price: {props.product.price}</div>
+          <div data-test-id="product-price">
+            Price: {props.product.price} euro
+          </div>
         </div>
         <div>
           {/* {currentProduct && (

@@ -1,12 +1,10 @@
 import { css } from '@emotion/react';
-// import Cookies from 'js-cookie';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Layout from '../components/Layout';
 import { getParsedCookie, setParsedCookie } from '../util/cookies';
-// import { getProducts, getSingleProduct } from '../util/database';
 import { getProducts } from '../util/database';
 
 const shoppingCartStyle = css`
@@ -20,14 +18,6 @@ const shoppingCartStyle = css`
   width: 150px;
   justify-content: space-evenly;
   align-items: stretch;
-  /* will-change: transform;
-  transition: transform 450ms;
-  cursor: pointer;
-
-  :hover {
-    transition: transform 125ms;
-    transform: translateY(-10px);
-  } */
 `;
 
 const checkoutButtonStyle = css`
@@ -87,61 +77,6 @@ export default function ShoppingCArt(props) {
     setParsedCookie('cart', updatedCookie);
     setProductAddedToCart(updatedCookie);
   }
-
-  // const [productPrice, setProductPrice] = useState([0]);
-  // const [productAmount, setProductAmount] = useState([0]);
-
-  // useEffect(() => {
-  //   const getAmount = () => {
-  //     const amountInCart = props.cart.map((product) => {
-  //       return product.productAmount;
-  //     });
-
-  //     const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
-
-  //     setProductAmount(sum);
-
-  //     const cartPrice = productAddedToCart.map((product) => {
-  //       return props.products.price * product.productAmount;
-  //     });
-
-  //     const totalCartPrice = cartPrice.reduce(
-  //       (productAdded, a) => productAdded + a,
-  //       0,
-  //     );
-  //     setProductPrice(totalCartPrice);
-  //   };
-  //   getAmount();
-  // });
-
-  // function handleDeleteCookie(id) {
-  //   const newCookie = productAddedToCart.filter((cookieObject) => {
-  //     return cookieObject.id !== id;
-  //   });
-  //   console.log('newCookie', newCookie);
-
-  //   setProductAddedToCart(newCookie);
-  //   setParsedCookie('cart', [newCookie]);
-  //   // Cookies.set('cart', JSON.stringify(newCookie));
-
-  //   const amountInCart = newCookie.map((product) => {
-  //     return product.productAmount;
-  //   });
-
-  //   const sum = amountInCart.reduce((productAdded, a) => productAdded + a, 0);
-
-  //   setProductAmount(sum);
-
-  //   const cartPrice = newCookie.map((product) => {
-  //     return props.products.price * product.productAmount;
-  //   });
-
-  //   const totalCartPrice = cartPrice.reduce(
-  //     (productAdded, a) => productAdded + a,
-  //     0,
-  //   );
-  //   setProductPrice(totalCartPrice);
-  // }
 
   return (
     <div>
@@ -216,20 +151,16 @@ export default function ShoppingCArt(props) {
 }
 
 export async function getServerSideProps(context) {
-  // const productId = context.query.productId;
-  // const matchingProduct = products.find((product) => product.id === productId);
   const cartWithCookie = context.req.cookies.cart || '[]';
 
   const cart = JSON.parse(cartWithCookie);
 
-  // const products = await getSingleProduct(Number(productId));
   const products = await getProducts();
 
   return {
     props: {
       products,
       cart,
-      // productId: productId,
     },
   };
 }

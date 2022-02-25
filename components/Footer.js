@@ -16,13 +16,6 @@ const footerStyle = css`
   cursor: pointer;
 `;
 
-// position: fixed
-// padding: 10px 10px 0px 10px;
-// bottom: 0;
-// width: 100%;
-
-// height: 40px;
-
 const footerTextStyle = css`
   display: flex;
   position: relative;
@@ -41,6 +34,7 @@ const footerTextStyle = css`
 
 const footerLogoStyle = css`
   position: relative;
+  margin-left: 10px;
   /* height: 1em;
   margin-left: 0.5rem; */
 `;
@@ -61,8 +55,8 @@ export default function Footer() {
             <Image
               src="/opensea-white-footer.svg"
               alt="opensea Logo"
-              width={50}
-              height={50}
+              width={30}
+              height={30}
             />
           </div>
         </a>

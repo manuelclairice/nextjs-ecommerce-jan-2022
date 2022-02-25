@@ -16,6 +16,7 @@ const collectionStyle = css`
   width: 150px;
   justify-content: space-evenly;
   align-items: stretch;
+
   will-change: transform;
   transition: transform 450ms;
   cursor: pointer;
@@ -72,17 +73,8 @@ export default function Collection(props) {
 }
 // READ FILES FROM FILES SYSTEM
 // CONNECT TO THE DATABASE
-// export function getServerSideProps() {
-//   return {
-//     props: {
-//       products: products,
-//     },
-//   };
-// }
 
 export async function getServerSideProps(context) {
-  // const productId = context.query.productId;
-  // const matchingProduct = products.find((product) => product.id === productId);
   const productWithCookies = context.req.cookies.cart || '[]';
 
   const cart = JSON.parse(productWithCookies);
@@ -93,7 +85,6 @@ export async function getServerSideProps(context) {
     props: {
       products: products,
       cart: cart,
-      // productId: productId,
     },
   };
 }
