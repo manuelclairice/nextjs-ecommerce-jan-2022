@@ -60,17 +60,9 @@ export default function SingleProduct(props) {
     const cookieValue = getParsedCookie('cart') || [];
 
     console.log('current value', cookieValue);
-    // UPDATE THE COOKIE
-    // const productIdOnArray = cookieValue.some((cookieObject) => {
-    //   return cookieObject.id === id;
-    // });
 
     let newCookie;
     if (props.cart !== '[]') {
-      // (productIdOnArray)
-      // newCookie = cookieValue.filter((cookieObject) => {
-      //   return cookieObject.id !== id;
-      // });
 
       // CHECKS IF THE PRODUCT WAS ALREADY ADDED TO THE CART
       const productIsAdded = props.cart.some(
@@ -101,41 +93,7 @@ export default function SingleProduct(props) {
     value = Math.max(Number(min), Math.min(Number(max), Number(value)));
     setQuantity(value);
   }
-  // CHECKS IF THE PRODUCT WAS ALREADY ADDED TO THE CART
-  // const productIsAdded = productAddedToCart.some((addedObject) =>
-  //   addedObject.id === props.product.id,
-  // );
 
-  // const currentProduct = productAddedToCart.find(
-  //   (cookieObject) => cookieObject.id === props.product.id,
-  // );
-
-  // FUNCTIONS FOR THE COUNT BUTTON
-  // function quantityCountUp() {
-  //   const cookieValue = getParsedCookie('cart') || [];
-  //   // const newCookie = cookieValue.map((cookieObject) => {
-  //   //   if (cookieObject.id === props.product.id) {
-  //   //     return { ...cookieObject, quantity: cookieObject.quantity + 1 };
-  //     } else {
-  //       return cookieObject;
-  //     }
-  //   });
-  //   setProductAddedToCart(newCookie);
-  //   setParsedCookie('cart', newCookie);
-  // }
-
-  // function quantityCountDown() {
-  //   const cookieValue = getParsedCookie('cart') || [];
-  //   const newCookie = cookieValue.map((cookieObject) => {
-  //     if (cookieObject.id === props.product.id) {
-  //       return { ...cookieObject, quantity: cookieObject.quantity - 1 };
-  //     } else {
-  //       return cookieObject;
-  //     }
-  //   });
-  //   setProductAddedToCart(newCookie);
-  //   setParsedCookie('cart', newCookie);
-  // }
 
   return (
     <Layout>

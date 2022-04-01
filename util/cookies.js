@@ -15,8 +15,6 @@ export function getParsedCookie(key) {
   }
 }
 
-// type LikedAnimal = { id: string, stars: number };
-// type LikedAnimals = LikedAnimal[];
 
 export function setParsedCookie(key, value) {
   Cookies.set(key, JSON.stringify(value));
