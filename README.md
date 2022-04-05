@@ -1,34 +1,31 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# NFT Market
 
-## Getting Started
+NFT Market is a mockup E-commerce Web App where we can buy NFTs.
 
-First, run the development server:
+# Tech Stack
+  ## Front/Backend
+   - Next.Js
+   - React
+   - JavaScript
+   - TYpeScript
+   - @emotion
+   - Js-cookie
+   - Dotenv
+   - Sharp
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+  ## Database
+   - PostgreSQL
+   - Ley
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+# Screenshots
+<img width="1429" alt="Screenshot 2022-04-05 at 12 11 17" src="https://user-images.githubusercontent.com/95539204/161734279-b2ef723d-5948-485a-afcc-2898c7c4639d.png">
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+<img width="1429" alt="Screenshot 2022-04-05 at 12 15 12" src="https://user-images.githubusercontent.com/95539204/161734292-1e09b2dc-c8f8-48c9-952d-659e8fc989a6.png">
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+<img width="1429" alt="Screenshot 2022-04-05 at 12 18 13" src="https://user-images.githubusercontent.com/95539204/161734308-578fc990-6e85-4910-84b8-7de3d66088b4.png">
 
-## Learn More
+<img width="1429" alt="Screenshot 2022-04-05 at 12 18 34" src="https://user-images.githubusercontent.com/95539204/161734347-cdcb48e5-8fb5-4504-81ea-49f31926867a.png">
 
-To learn more about Next.js, take a look at the following resources:
+<img width="1429" alt="Screenshot 2022-04-05 at 12 19 05" src="https://user-images.githubusercontent.com/95539204/161734366-2dd8dc18-01f1-4868-9dc6-e618415fe444.png">
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
