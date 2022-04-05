@@ -13,6 +13,8 @@ const collectionStyle = css`
   border: 1px solid #ccc;
   padding: 15px;
   margin-bottom: 20px;
+  margin-right: 10px;
+  margin-left: 22px;
   width: 150px;
   justify-content: space-evenly;
   align-items: stretch;
